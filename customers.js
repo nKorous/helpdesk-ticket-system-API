@@ -36,8 +36,6 @@ router.get('/customer', async (req, res) => {
 router.post('/customer', async (req, res) => {
     const newCustomer = req.body
 
-    console.log(newCustomer)
-
     CUSTOMERS = [...CUSTOMERS, 
         { customerKey: getNextIndex(), ...newCustomer}]
 
