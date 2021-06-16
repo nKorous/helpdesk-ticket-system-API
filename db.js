@@ -1,6 +1,9 @@
-const firebase = require('firebase-admin')
+const firebase = require('firebase/app')
+require('firebase/firestore')
 
-firebase.initializeApp()
+const dbConfig = require('./dbConfig.json')
+
+firebase.initializeApp(dbConfig[0])
 
 const db = firebase.firestore();
 

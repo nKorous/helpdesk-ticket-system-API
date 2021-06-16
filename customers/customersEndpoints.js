@@ -27,7 +27,17 @@ let CUSTOMERS = [
 ];
 
 router.get("/allCustomers", async (req, res) => {
-  res.status(200).send(getAllCustomers());
+  const allCustomers = getAllCustomers()
+
+  allCustomers.then(data => {
+      let customers = []
+
+      data.forEach(d => customers = [...customers, { id: d.id, ...d.data()}])
+
+      return customers
+    }).then(customers => res.status(200).send(customers))
+    .catch(err => console.error('/GET allCustomers', err))
+
 });
 
 router.get("/customer", async (req, res) => {
@@ -57,8 +67,11 @@ function getNextIndex() {
   return CUSTOMERS.sort((a, b) => (a.customerKey > b.customerKey ? 1 : b.customerKey > a.customerKey ? 0 : -1))[CUSTOMERS.length - 1].customerKey + 1;
 }
 
-function getAllCustomers() {
-  return CUSTOMERS;
+async function getAllCustomers() {
+  const customers = db.collection('customers')
+  const doc = await customers.get();
+
+  return doc
 }
 
 function getCustomerByKey(customerKey) {
